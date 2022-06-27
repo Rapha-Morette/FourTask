@@ -1,0 +1,43 @@
+﻿.HomeBanner {
+    background-image: url(/img/Home.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 21em;
+    border-radius: 7em;
+}
+
+.container_flex {
+    display: flex;
+    justify-content: space-between;
+    gap: 8em;
+}
+
+.BannerWork {
+    background-image: url(../img/BannerWork.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 80%;
+    height: 300px;
+    border-radius: 5em;
+}
+
+.TextoBannerWork {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+}
+
+.Separador {
+    margin: 13px 0;
+    background-color: #fff;
+    border: 1px solid #fff;
+    opacity: .25;
+}
+
+.imagem_Perfil {
+    border-radius: 5px 50px;
+}
+.img_perfil img {
+    width: 10em;
+}

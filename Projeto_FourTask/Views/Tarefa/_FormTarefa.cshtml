@@ -1,0 +1,26 @@
+﻿@model EquipeViewModel
+
+
+<div class="mb-3">
+    <label asp-for="Tarefa.Titulo" class="form-label"></label>
+    <input asp-for="Tarefa.Titulo" id="tipoChave" class="form-control" />
+</div>
+
+
+<div class="mb-3">
+    <label asp-for="Tarefa.Descricao" class="form-label"></label>
+    <input asp-for="Tarefa.Descricao" class="form-control" />
+</div>
+
+
+<div class="mb-3">
+    <label asp-for="Tarefa.DataLimite" class="form-label"></label>
+    <input asp-for="Tarefa.DataLimite" class="form-control" />
+</div>
+
+<div class="mb-3">
+    <label asp-for="Tarefa.Equipe" class="form-label"></label>
+    <select asp-for="Tarefa.EquipeId" asp-items="ViewBag.equipes" class="form-control">
+        <option>Selecione</option>
+    </select>
+</div>

@@ -1,0 +1,16 @@
+﻿@model EquipeViewModel
+@{
+    ViewData["Title"] = $"Editar {Model.Tarefa.Titulo}";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Editar @Model.Tarefa.Titulo</h1>
+
+<form asp-action="Editar">
+    <input type="hidden" asp-for="Tarefa.TarefaId" />
+
+    <partial name="_FormTarefa" />
+
+    <input type="submit" class="btn btn-outline-warning" value="Editar" />
+
+</form>

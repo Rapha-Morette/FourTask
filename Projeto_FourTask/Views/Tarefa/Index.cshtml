@@ -1,0 +1,117 @@
+﻿@{
+    ViewData["Title"] = "Tarefas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/tabelas.css" />
+<hr />
+<h1>Criar Tarefas</h1>
+<hr />
+<div>
+    <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        Cadastrar Tarefa
+    </button>
+</div>
+<hr />
+
+<mensagem texto="@TempData["CadastroInvalido"]" class="alert alert-danger"></mensagem>
+<mensagem texto="@TempData["EdicaoInvalido"]" class="alert alert-danger"></mensagem>
+<mensagem texto="@TempData["msgRemover"]" class="alert alert-danger"></mensagem>
+<mensagem texto="@TempData["msgTarefa"]"></mensagem>
+<mensagem texto=@TempData["msgEditar"]></mensagem>
+
+<hr class="Separador" />
+<h1>Listagem de Tarefas</h1>
+
+
+@*Inicio modal*@
+<div class="modal" tabindex="-1" id="exampleModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Cadastro de Tarefa</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            @*Formulário no modal*@
+            <div class="modal-body">
+                <div class="mb-3">
+
+                    <form asp-action="CadastrarTarefa">
+
+                        <partial name="_FormTarefa" />
+
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-success">Cadastrar</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<hr class="Separador" />
+
+<table class="table table-secondary">
+    <thead class="table-primary">
+        <tr>
+            <th>Id</th>
+            <th>Titulo</th>
+            <th>Descricao</th>
+            <th>Data de criação</th>
+            <th>Data Limite</th>
+            <th>Id da Equipe</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Tarefa tarefa in Model.ListaTarefa)
+        {
+            <tr>
+                <td>@tarefa.TarefaId</td>
+                <td>@tarefa.Titulo</td>
+                <td>@tarefa.Descricao</td>
+                <td>@tarefa.DataCriacao.ToShortDateString()</td>
+                <td>@tarefa.DataLimite.ToShortDateString()</td>
+                <td>@tarefa.Equipe.Nome</td>
+                <td>
+                    <a asp-action="Editar" asp-route-id="@tarefa.TarefaId" class="btn btn-sm btn-warning">Editar</a>
+                    <!-- Button trigger modal -->
+                <button onclick="idTarefa.value = @tarefa.TarefaId" type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModalRemove">
+                        Remover
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalRemove" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Confirmação</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Realmente gostaria de remover esta tarefa?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-bs-dismiss="modal">Fechar</button>
+                <form asp-action="Remover">
+                    <input type="hidden" id="idTarefa" name="id" />
+
+                    <input type="submit" value="Remover" class="btn btn-danger" />
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

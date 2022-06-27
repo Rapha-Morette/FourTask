@@ -1,0 +1,190 @@
+﻿@using Microsoft.EntityFrameworkCore;
+
+@model EquipeViewModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<hr />
+<link rel="stylesheet" href="~/css/tabelas.css" />
+
+<mensagem texto="@TempData["msgCadastrouEquipe"]"></mensagem>
+<mensagem texto="@TempData["msgEntrouEquipe"]"></mensagem>
+<mensagem texto="@TempData["senhaIncorreta"]" class="alert alert-danger"></mensagem>
+<mensagem texto="@TempData["msgTarefaAceita"]"></mensagem>
+
+<hr />
+
+@if (TempData["msgJaPossuiEquipe"] != null)
+{
+    <div style="display:none;">
+        @TempData["msgJaPossuiEquipe"]
+    </div>
+
+    <h1>Equipe que você faz parte</h1>
+    <hr />
+
+    <table class="table table-secondary">
+        <thead class="table-primary">
+            <tr>
+                <th>Id</th>
+                <th>Nome</th>
+                <th>Descrição</th>
+                <th>Area Contratação</th>
+                <th>Data de criação</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (Equipe equipe in Model.ListaEquipe)
+            {
+                <tr>
+                    <td>@equipe.EquipeId</td>
+                    <td>@equipe.Nome</td>
+                    <td>@equipe.Descricao</td>
+                    <td>@equipe.AreaContratacao</td>
+                    <td>@equipe.DataCriacao.ToShortDateString()</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+else
+{
+
+    <h1>Listagem de Equipes</h1>
+    <hr />
+    <table class="table table-secondary">
+        <thead class="table-primary">
+            <tr>
+                <th>Id</th>
+                <th>Nome</th>
+                <th>Descrição</th>
+                <th>Area Contratação</th>
+                <th>Data de criação</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Equipe equipe in Model.ListaEquipe)
+            {
+                <tr>
+                    <td>@equipe.EquipeId</td>
+                    <td>@equipe.Nome</td>
+                    <td>@equipe.Descricao</td>
+                    <td>@equipe.AreaContratacao</td>
+                    <td>@equipe.DataCriacao.ToShortDateString()</td>
+                    <td>
+                        <button onclick="idEquipe.value = @equipe.EquipeId, senha.value" type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#exampleModalEntraEquipe">
+                            Entrar
+                        </button>
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalEntraEquipe" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Confirmação</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Realmente gostaria de entrar nessa equipe?
+                <br />
+            </div>
+            <div class="modal-footer">
+                <form asp-action="EntrarEquipe">
+                    <label class="form-label" name="LabelSenha"> Senha da Equipe</label>
+                    <input type="password" class="form-control" id="senha" name="senha" />
+                    <br />
+                    <div style="display:flex; gap:1em;">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                        <input type="submit" value="Entrar" class="btn btn-success" />
+                        <input type="hidden" id="idEquipe" name="id" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr class="Separador" />
+
+<h1>Listagem de tarefas da sua equipe</h1>
+@if (TempData["UsuarioSemEquipe"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["UsuarioSemEquipe"]
+    </div>
+}
+else
+{
+    <table class="table table-secondary">
+        <thead class="table-primary">
+            <tr>
+                <th>Id</th>
+                <th>Titulo</th>
+                <th>Descricao</th>
+                <th>Data de criação</th>
+                <th>Data Limite</th>
+                <th>Ações / Usuario Responsável</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Tarefa tarefa in Model.ListaTarefa)
+            {
+                <tr>
+                    <td>@tarefa.TarefaId</td>
+                    <td>@tarefa.Titulo</td>
+                    <td>@tarefa.Descricao</td>
+                    <td>@tarefa.DataCriacao.ToShortDateString()</td>
+                    <td>@tarefa.DataLimite.ToShortDateString()</td>
+                    @if (tarefa.UsuarioId == null)
+                    {
+                        <td>
+                            <button onclick="idTarefa.value = @tarefa.TarefaId" type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#exampleModalAceitarTarefa">
+                                Aceitar
+                            </button>
+                        </td>
+                    }
+                    else
+                    {
+                        <td>@tarefa.Usuario.Nome</td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalAceitarTarefa" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Confirmação</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Realmente gostaria de aceitar esta tarefa?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Fechar</button>
+                <form asp-action="AceitarTarefa">
+                    <input type="hidden" id="idTarefa" name="id" />
+
+                    <input type="submit" value="Aceitar" class="btn btn-success" />
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

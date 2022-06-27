@@ -1,0 +1,9 @@
+﻿.table-secondary tr {
+    border-bottom: 1px solid;
+}
+.Separador {
+    margin: 13px 0;
+    background-color: #fff;
+    border: 1px solid #fff;
+    opacity: .25;
+}
